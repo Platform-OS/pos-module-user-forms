@@ -1,6 +1,6 @@
-# Module name
+# User forms
 
-Module description
+This module creates the user related forms.
 
 ## Usage
 
