@@ -2,39 +2,17 @@
 layout: modules/pos-module-user-forms/forms
 slug: user/register
 ---
+<div class="mt-4 flex items-center justify-center flex-wrap gap-4">
+  <div>
+    {% liquid
+      assign heading_params = '{}' | parse_json | hash_merge: level: '1', content: 'Registration', classes: 'mb-4'
+      theme_render_rc 'components/atoms/heading', params: heading_params
+    %}
 
-{% liquid
-  assign heading_params = '{}' | parse_json | hash_merge: level: '1', content: 'Registration'
-  theme_render_rc 'components/atoms/heading', params: heading_params
-%}
+    {% liquid
+      assign form_params = '{}' | parse_json | hash_merge: action: '/do-register'
+      theme_render_rc 'pos-module-user-forms/organisms/register', params: form_params
+    %}
+  </div>
+</div>
 
-<form action="">
-  {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'pos-email'
-    assign label_params = '{}' | parse_json | hash_merge: content: 'E-mail'
-    assign description_params = '{}' | parse_json | hash_merge: content: 'E-mal address of the user'
-    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params
-    theme_render_rc 'components/molecules/input-with-label', params: fieldset_params
-  %}
-
-  {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'pos-password', type: 'password'
-    assign label_params = '{}' | parse_json | hash_merge: content: 'Password'
-    assign description_params = '{}' | parse_json | hash_merge: content: 'Password'
-    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params
-    theme_render_rc 'components/molecules/input-with-label', params: fieldset_params
-  %}
-
-  {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'pos-password2', type: 'password'
-    assign label_params = '{}' | parse_json | hash_merge: content: 'Password confirmation'
-    assign description_params = '{}' | parse_json | hash_merge: content: 'Please repeat the password'
-    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params
-    theme_render_rc 'components/molecules/input-with-label', params: fieldset_params
-  %}
-
-  {% liquid
-    assign button_params = '{}' | parse_json | hash_merge: weight: 'primary', content: 'Register'
-    theme_render_rc 'components/atoms/button', params: button_params
-  %}
-</form>
