@@ -1,10 +1,21 @@
 # User forms
 
-This module creates the user related forms.
+This module creates the user related forms:
+- user registration form
+- user login form
 
 ## Usage
 
-How to use the module
+Once you installed the module you can use the atomic buiding blocks with [theme_render_rc](https://documentation.platformos.com/api-reference/liquid/platformos-tags#theme_render_rc) or a standard `render` tag.
+
+In your project, you can render the component like this:
+
+```
+{% liquid
+  assign form_params = '{}' | parse_json | hash_merge: action: '/do-login'
+  theme_render_rc 'pos-module-user-forms/organisms/login', params: form_params
+%}
+```
 
 ## Hooks
 
