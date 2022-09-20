@@ -13,7 +13,7 @@ In your project, you can render the component like this:
 ```
 {% liquid
   assign form_params = '{}' | parse_json | hash_merge: action: '/do-login'
-  theme_render_rc 'pos-module-user-forms/organisms/login', params: form_params
+  theme_render_rc 'user-forms/organisms/login', params: form_params
 %}
 ```
 
