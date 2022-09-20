@@ -13,7 +13,7 @@ metadata:
 
 <form action="{{action}}" method="{{method}}">
   {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'pos-email'
+    assign input_params = '{}' | parse_json | hash_merge: name: 'email'
     assign label_params = '{}' | parse_json | hash_merge: content: 'E-mail'
     assign description_params = '{}' | parse_json | hash_merge: content: 'E-mal address of the user'
     assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params
