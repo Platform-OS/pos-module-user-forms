@@ -9,6 +9,7 @@ metadata:
 {% liquid
   assign action = params.action | default: '/users/register'
   assign method = params.method | default: 'POST'
+  assign redirect_to = params.redirect_to | default: '/'
 %}
 
 <form action="{{action}}" method="{{method}}">
@@ -38,6 +39,11 @@ metadata:
 
   {% liquid
     assign input_params = '{}' | parse_json | hash_merge: name: 'authenticity_token', type: 'hidden', value: context.authenticity_token
+    theme_render_rc 'components/atoms/input', params: input_params
+  %}
+
+  {% liquid
+    assign input_params = '{}' | parse_json | hash_merge: name: 'redirect_to', type: 'hidden', value: redirect_to
     theme_render_rc 'components/atoms/input', params: input_params
   %}
 
