@@ -6,7 +6,7 @@ metadata:
     method: 'POST'
 ---
 {% liquid
-  assign action = params.action | default: ''
+  assign action = params.action | default: '/sessions/create'
   assign method = params.method | default: 'POST'
 %}
 
