@@ -37,6 +37,11 @@ metadata:
   %}
 
   {% liquid
+    assign input_params = '{}' | parse_json | hash_merge: name: 'authenticity_token', type: 'hidden', value: context.authenticity_token
+    theme_render_rc 'components/atoms/input', params: input_params
+  %}
+
+  {% liquid
     assign button_params = '{}' | parse_json | hash_merge: weight: 'primary', content: 'Register'
     theme_render_rc 'components/atoms/button', params: button_params
   %}
