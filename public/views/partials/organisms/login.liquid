@@ -14,15 +14,15 @@ metadata:
 
 <form action="{{action}}" method="{{method}}">
   {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'email'
+    assign input_params = '{}' | parse_json | hash_merge: name: 'email', required: true
     assign label_params = '{}' | parse_json | hash_merge: content: 'E-mail'
-    assign description_params = '{}' | parse_json | hash_merge: content: 'E-mal address of the user'
+    assign description_params = '{}' | parse_json | hash_merge: content: 'E-mail address of the user'
     assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params
     theme_render_rc 'components/molecules/input-with-label', params: fieldset_params
   %}
 
   {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'password', type: 'password'
+    assign input_params = '{}' | parse_json | hash_merge: name: 'password', type: 'password', required: true
     assign label_params = '{}' | parse_json | hash_merge: content: 'Password'
     assign description_params = '{}' | parse_json | hash_merge: content: 'Password'
     assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params
