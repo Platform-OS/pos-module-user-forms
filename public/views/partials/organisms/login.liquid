@@ -4,6 +4,7 @@ metadata:
   params:
     action: ''
     method: 'POST'
+    redirect_to: '/'
 ---
 {% liquid
   assign action = params.action | default: '/sessions/create'
