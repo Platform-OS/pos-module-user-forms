@@ -1,0 +1,54 @@
+---
+metadata:
+  name: register form
+  params:
+    action: ''
+    method: 'POST'
+    redirect_to: '/'
+---
+{% liquid
+  assign action = params.action | default: '/users/register'
+  assign method = params.method | default: 'POST'
+  assign redirect_to = params.redirect_to | default: '/'
+%}
+
+<form action="{{action}}" method="{{method}}">
+  {% liquid
+    assign input_params = '{}' | parse_json | hash_merge: name: 'email', required: true, type: 'email'
+    assign label_params = '{}' | parse_json | hash_merge: content: 'E-mail'
+    assign description_params = '{}' | parse_json | hash_merge: content: 'E-mail address of the user'
+    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params
+    theme_render_rc 'components/molecules/input-with-label', params: fieldset_params
+  %}
+
+  {% liquid
+    assign input_params = '{}' | parse_json | hash_merge: name: 'password', type: 'password', required: true
+    assign label_params = '{}' | parse_json | hash_merge: content: 'Password'
+    assign description_params = '{}' | parse_json | hash_merge: content: 'Password'
+    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params
+    theme_render_rc 'components/molecules/input-with-label', params: fieldset_params
+  %}
+
+  {% liquid
+    assign input_params = '{}' | parse_json | hash_merge: name: 'password2', type: 'password', required: true
+    assign label_params = '{}' | parse_json | hash_merge: content: 'Password confirmation'
+    assign description_params = '{}' | parse_json | hash_merge: content: 'Please repeat the password'
+    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params
+    theme_render_rc 'components/molecules/input-with-label', params: fieldset_params
+  %}
+
+  {% liquid
+    assign input_params = '{}' | parse_json | hash_merge: name: 'authenticity_token', type: 'hidden', value: context.authenticity_token
+    theme_render_rc 'components/atoms/input', params: input_params
+  %}
+
+  {% liquid
+    assign input_params = '{}' | parse_json | hash_merge: name: 'redirect_to', type: 'hidden', value: redirect_to
+    theme_render_rc 'components/atoms/input', params: input_params
+  %}
+
+  {% liquid
+    assign button_params = '{}' | parse_json | hash_merge: weight: 'primary', content: 'Register'
+    theme_render_rc 'components/atoms/button', params: button_params
+  %}
+</form>
