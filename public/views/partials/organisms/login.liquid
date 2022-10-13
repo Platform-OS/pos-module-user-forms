@@ -18,7 +18,7 @@ metadata:
     assign label_params = '{}' | parse_json | hash_merge: content: 'E-mail'
     assign description_params = '{}' | parse_json | hash_merge: content: 'E-mail address of the user'
     assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params
-    theme_render_rc 'components/molecules/input-with-label', params: fieldset_params
+    theme_render_rc 'components/molecules/formfield', params: fieldset_params
   %}
 
   {% liquid
@@ -26,7 +26,7 @@ metadata:
     assign label_params = '{}' | parse_json | hash_merge: content: 'Password'
     assign description_params = '{}' | parse_json | hash_merge: content: 'Password'
     assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params
-    theme_render_rc 'components/molecules/input-with-label', params: fieldset_params
+    theme_render_rc 'components/molecules/formfield', params: fieldset_params
   %}
 
   {% liquid
