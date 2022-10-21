@@ -48,7 +48,7 @@ metadata:
   %}
 
   {% liquid
-    assign button_params = '{}' | parse_json | hash_merge: weight: 'primary', content: 'Register'
+    assign button_params = '{}' | parse_json | hash_merge: weight: 'primary', content: 'Register', type: 'submit'
     theme_render_rc 'components/atoms/button', params: button_params
   %}
 </form>
