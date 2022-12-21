@@ -1,6 +1,6 @@
 ---
 metadata:
-  name: login form
+  name: register form
   params:
     action: ''
     method: 'POST'
@@ -13,14 +13,14 @@ metadata:
       - value: "random@example.com"
 ---
 {% liquid
-  assign action = params.action | default: '/sessions/create'
+  assign action = params.action | default: '/users/register'
   assign method = params.method | default: 'POST'
   assign redirect_to = params.redirect_to | default: '/'
 %}
 
 <form action="{{action}}" method="{{method}}">
   {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'email', required: true, type: 'email', value: params.values.email
+    assign input_params = '{}' | parse_json | hash_merge: name: 'email', required: true, type: 'email', value: params.values.email, classes: "w-full"
     assign label_params = '{}' | parse_json | hash_merge: content: 'E-mail'
     assign description_params = '{}' | parse_json | hash_merge: content: 'E-mail address of the user'
     assign validation = '{}' | parse_json
@@ -28,12 +28,12 @@ metadata:
       hash_assign validation['passed'] = false
       hash_assign validation['messages'] = params.errors['email']
     endif
-    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params, validation: validation
+    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params, validation: validation, classes: "mb-6"
     theme_render_rc 'components/molecules/formfield', params: fieldset_params
   %}
 
   {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'password', type: 'password', required: true
+    assign input_params = '{}' | parse_json | hash_merge: name: 'password', type: 'password', required: true, classes: "w-full"
     assign label_params = '{}' | parse_json | hash_merge: content: 'Password'
     assign description_params = '{}' | parse_json | hash_merge: content: 'Password'
     assign validation = '{}' | parse_json
@@ -41,7 +41,20 @@ metadata:
       hash_assign validation['passed'] = false
       hash_assign validation['messages'] = params.errors['password']
     endif
-    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params, validation: validation
+    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params, validation: validation, classes: "mb-6"
+    theme_render_rc 'components/molecules/formfield', params: fieldset_params
+  %}
+
+  {% liquid
+    assign input_params = '{}' | parse_json | hash_merge: name: 'password2', type: 'password', required: true, classes: "w-full"
+    assign label_params = '{}' | parse_json | hash_merge: content: 'Password confirmation'
+    assign description_params = '{}' | parse_json | hash_merge: content: 'Please repeat the password'
+    assign validation = '{}' | parse_json
+    if params.errors['password2']
+      hash_assign validation['passed'] = false
+      hash_assign validation['messages'] = params.errors['password2']
+    endif
+    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params, validation: validation, classes: "mb-6"
     theme_render_rc 'components/molecules/formfield', params: fieldset_params
   %}
 
@@ -56,7 +69,7 @@ metadata:
   %}
 
   {% liquid
-    assign button_params = '{}' | parse_json | hash_merge: weight: 'primary', content: 'Login', type: 'submit'
+    assign button_params = '{}' | parse_json | hash_merge: weight: 'primary', content: 'Register', type: 'submit'
     theme_render_rc 'components/atoms/button', params: button_params
   %}
 </form>
