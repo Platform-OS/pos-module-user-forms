@@ -2,9 +2,10 @@
 metadata:
   name: register form
   params:
-    action: ''
+    action: '/users/register'
     method: 'POST'
     redirect_to: '/'
+    registration_fields: []
     errors:
       - field_name: "email"
       - error: "Error message"
@@ -16,60 +17,38 @@ metadata:
   assign action = params.action | default: '/users/register'
   assign method = params.method | default: 'POST'
   assign redirect_to = params.redirect_to | default: '/'
+  assign registration_fields = params.registration_fields
 %}
 
-<form action="{{action}}" method="{{method}}">
-  {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'email', required: true, type: 'email', value: params.values.email, classes: "w-full"
-    assign label_params = '{}' | parse_json | hash_merge: content: 'E-mail'
-    assign description_params = '{}' | parse_json | hash_merge: content: 'E-mail address of the user'
-    assign validation = '{}' | parse_json
-    if params.errors['email']
-      hash_assign validation['passed'] = false
-      hash_assign validation['messages'] = params.errors['email']
-    endif
-    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params, validation: validation, classes: "mb-6"
-    theme_render_rc 'components/molecules/formfield', params: fieldset_params
-  %}
+<form action="{{action}}" method="{{method}}" data-tc="register-user">
+  {% render 'authenticity_token' %}
 
-  {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'password', type: 'password', required: true, classes: "w-full"
-    assign label_params = '{}' | parse_json | hash_merge: content: 'Password'
-    assign description_params = '{}' | parse_json | hash_merge: content: 'Password'
-    assign validation = '{}' | parse_json
-    if params.errors['password']
-      hash_assign validation['passed'] = false
-      hash_assign validation['messages'] = params.errors['password']
-    endif
-    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params, validation: validation, classes: "mb-6"
-    theme_render_rc 'components/molecules/formfield', params: fieldset_params
-  %}
+  {% for field in registration_fields %}
+    {% liquid
+      assign default_value = object[field.name] | raw_escape_string
+      assign error_messages = '[]' | json_parse
+      assign has_error = object.errors[field.name]
+      assign validation = null | hash_merge: messages: error_messages
+      if has_error
+        hash_assign validation['passed'] = false
+        hash_assign validation['messages'] = error_messages
+      endif
+      assign input_params = field | hash_merge: value: default_value, classes: 'w-full'
+      assign label_params = null | hash_merge: content: field.label
+      assign field_params = null | hash_merge: validation: validation, input_params: input_params, label_params: label_params, classes: 'mb-6'
 
-  {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'password2', type: 'password', required: true, classes: "w-full"
-    assign label_params = '{}' | parse_json | hash_merge: content: 'Password confirmation'
-    assign description_params = '{}' | parse_json | hash_merge: content: 'Please repeat the password'
-    assign validation = '{}' | parse_json
-    if params.errors['password2']
-      hash_assign validation['passed'] = false
-      hash_assign validation['messages'] = params.errors['password2']
-    endif
-    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params, validation: validation, classes: "mb-6"
-    theme_render_rc 'components/molecules/formfield', params: fieldset_params
-  %}
+      theme_render_rc 'components/molecules/formfield', params: field_params
+    %}
+  {% endfor %}
 
-  {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'authenticity_token', type: 'hidden', value: context.authenticity_token
-    theme_render_rc 'components/atoms/input', params: input_params
-  %}
+  {% render 'hcaptcha', object: object %}
 
-  {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'redirect_to', type: 'hidden', value: redirect_to
-    theme_render_rc 'components/atoms/input', params: input_params
-  %}
+  <fieldset class="mt-5">
+    {% liquid
+      assign button_label = 'app.users.form.signup' | t
+      assign button_params = '{}' | parse_json | hash_merge: weight: 'primary', content: button_label, type: 'submit'
+      theme_render_rc 'components/atoms/button', params: button_params
+    %}
+  </fieldset>
 
-  {% liquid
-    assign button_params = '{}' | parse_json | hash_merge: weight: 'primary', content: 'Register', type: 'submit'
-    theme_render_rc 'components/atoms/button', params: button_params
-  %}
 </form>
