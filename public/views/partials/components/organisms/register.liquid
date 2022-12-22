@@ -18,58 +18,31 @@ metadata:
   assign redirect_to = params.redirect_to | default: '/'
 %}
 
-<form action="{{action}}" method="{{method}}">
-  {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'email', required: true, type: 'email', value: params.values.email, classes: "w-full"
-    assign label_params = '{}' | parse_json | hash_merge: content: 'E-mail'
-    assign description_params = '{}' | parse_json | hash_merge: content: 'E-mail address of the user'
-    assign validation = '{}' | parse_json
-    if params.errors['email']
-      hash_assign validation['passed'] = false
-      hash_assign validation['messages'] = params.errors['email']
-    endif
-    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params, validation: validation, classes: "mb-6"
-    theme_render_rc 'components/molecules/formfield', params: fieldset_params
-  %}
+<form action="/users/register" method="post" class="w-full mx-auto card-lg md:w-96" data-tc="register-user">
+  {% render 'authenticity_token' %}
 
-  {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'password', type: 'password', required: true, classes: "w-full"
-    assign label_params = '{}' | parse_json | hash_merge: content: 'Password'
-    assign description_params = '{}' | parse_json | hash_merge: content: 'Password'
-    assign validation = '{}' | parse_json
-    if params.errors['password']
-      hash_assign validation['passed'] = false
-      hash_assign validation['messages'] = params.errors['password']
-    endif
-    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params, validation: validation, classes: "mb-6"
-    theme_render_rc 'components/molecules/formfield', params: fieldset_params
-  %}
+  {% for field in registration_fields %}
+    {% if field.type == 'select' %}
+      <fieldset>
+        <label for="{{ field.name }}">{{ field.label }}</label>
+        <select id="{{ field.name }}" name="{{ field.name }}">
+          {% for option in field.options %}
+            <option value="{{ option.value }}">{{ option.title }}</option>
+          {% endfor %}
+        </select>
+      </fieldset>
+      {% continue  %}
+    {% endif %}
+    <fieldset>
+      <label for="{{ field.name }}">{{ field.label }}</label>
+      <input name="{{ field.name }}" type="{{ field.type }}" id="{{ field.name }}" value="{{ object[field.name] | raw_escape_string }}" {% if field.required %} required {% endif %}>
+      {% render 'theme/simple/field_error', errors: object.errors[field.name] %}
+    </fieldset>
+  {% endfor %}
 
-  {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'password2', type: 'password', required: true, classes: "w-full"
-    assign label_params = '{}' | parse_json | hash_merge: content: 'Password confirmation'
-    assign description_params = '{}' | parse_json | hash_merge: content: 'Please repeat the password'
-    assign validation = '{}' | parse_json
-    if params.errors['password2']
-      hash_assign validation['passed'] = false
-      hash_assign validation['messages'] = params.errors['password2']
-    endif
-    assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, description_params: description_params, validation: validation, classes: "mb-6"
-    theme_render_rc 'components/molecules/formfield', params: fieldset_params
-  %}
+  {% render 'hcaptcha', object: object %}
 
-  {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'authenticity_token', type: 'hidden', value: context.authenticity_token
-    theme_render_rc 'components/atoms/input', params: input_params
-  %}
-
-  {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'redirect_to', type: 'hidden', value: redirect_to
-    theme_render_rc 'components/atoms/input', params: input_params
-  %}
-
-  {% liquid
-    assign button_params = '{}' | parse_json | hash_merge: weight: 'primary', content: 'Register', type: 'submit'
-    theme_render_rc 'components/atoms/button', params: button_params
-  %}
+  <fieldset class="mt-5">
+    <button class="mt-3 button" type="submit">{{ 'app.users.form.signup' | t }}</button>
+  </fieldset>
 </form>
