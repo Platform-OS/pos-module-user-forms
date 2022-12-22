@@ -24,17 +24,6 @@ metadata:
   {% render 'authenticity_token' %}
 
   {% for field in registration_fields %}
-    {% if field.type == 'select' %}
-      <fieldset>
-        <label for="{{ field.name }}">{{ field.label }}</label>
-        <select id="{{ field.name }}" name="{{ field.name }}">
-          {% for option in field.options %}
-            <option value="{{ option.value }}">{{ option.title }}</option>
-          {% endfor %}
-        </select>
-      </fieldset>
-      {% continue  %}
-    {% endif %}
     {% liquid
       assign default_value = object[field.name] | raw_escape_string
       assign error_messages = '[]' | json_parse
@@ -44,9 +33,9 @@ metadata:
         hash_assign validation['passed'] = false
         hash_assign validation['messages'] = error_messages
       endif
-      assign input_params = null | hash_merge: type: field.type, name: field.name, required: field.required, value: default_value, classes: 'w-full'
+      assign input_params = field | hash_merge: value: default_value, classes: 'w-full'
       assign label_params = null | hash_merge: content: field.label
-      assign field_params = null | hash_merge: validation: validation, input_params: input_params, label_params: label_params
+      assign field_params = null | hash_merge: validation: validation, input_params: input_params, label_params: label_params, classes: 'mb-6'
 
       theme_render_rc 'components/molecules/formfield', params: field_params
     %}
