@@ -19,7 +19,7 @@ metadata:
   assign redirect_to = params.redirect_to | default: '/'
 %}
 
-<form action="{{action}}" method="{{method}}" {% if params.classes %}class="{{params.classes}}"{% endif %}>
+<form action="{{action}}" method="{{method}}" {% if params.classes %}class="{{params.classes}}"{% endif %} data-tc="login-form">
   {% liquid
     assign input_params = '{}' | parse_json | hash_merge: name: 'email', required: true, type: 'email', value: params.values.email, classes: "w-full"
     assign label_params = '{}' | parse_json | hash_merge: content: 'E-mail'
