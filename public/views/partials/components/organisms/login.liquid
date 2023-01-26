@@ -14,7 +14,7 @@ metadata:
       - value: "random@example.com"
 ---
 {% liquid
-  assign action = actions | default: params.action
+  assign action = action | default: params.action
   assign method = method | default: params.method | default: 'POST'
   assign redirect_to = redirect_to | default: params.redirect_to | default: '/'
   assign footer = footer | default: params.footer
