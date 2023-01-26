@@ -3,3 +3,8 @@ en:
   password: Password
   password_confirmation: Confirm password
   password_update: Update password
+  login: Login
+  register: Register
+  reset_password: Reset password
+  email: E-mail
+  email_desc: E-mail address of the user

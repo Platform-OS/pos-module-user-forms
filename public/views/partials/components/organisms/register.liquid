@@ -14,10 +14,11 @@ metadata:
       - value: "random@example.com"
 ---
 {% liquid
-  assign action = params.action | default: '/users/register'
-  assign method = params.method | default: 'POST'
-  assign redirect_to = params.redirect_to | default: '/'
-  assign registration_fields = params.registration_fields
+  assign action = action | default: params.action
+  assign method = method | default: params.method | default: 'POST'
+  assign errors = errors | default: params.errors
+  assign redirect_to = redirect_to | default: params.redirect_to | default: '/'
+  assign registration_fields = registration_fields | default: params.registration_fields
 %}
 
 <form action="{{action}}" method="{{method}}" data-tc="register-user">
@@ -25,9 +26,9 @@ metadata:
 
   {% for field in registration_fields %}
     {% liquid
-      assign default_value = object[field.name] | raw_escape_string
+      assign default_value = values[field.name] | raw_escape_string
       assign error_messages = '[]' | json_parse
-      assign has_error = object.errors[field.name]
+      assign has_error = errors[field.name]
       assign validation = null | hash_merge: messages: error_messages
       if has_error
         hash_assign validation['passed'] = false
@@ -45,9 +46,8 @@ metadata:
 
   <fieldset class="mt-5">
     {% liquid
-      assign button_label = 'app.users.form.signup' | t
-      assign button_params = '{}' | parse_json | hash_merge: weight: 'primary', content: button_label, type: 'submit'
-      theme_render_rc 'components/atoms/button', params: button_params
+      assign label = 'modules/user-forms/register' | t
+      theme_render_rc 'components/atoms/button', content: label, type: 'submit'
     %}
   </fieldset>
 

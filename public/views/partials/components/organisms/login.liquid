@@ -12,15 +12,12 @@ metadata:
     values:
       - field_name: "email"
       - value: "random@example.com"
-    register_page_url: '/sign-up'
-    password_reset_page_url: '/passwords/reset'
 ---
 {% liquid
-  assign action = actions | default: params.action | default: '/sessions/create'
+  assign action = actions | default: params.action
   assign method = method | default: params.method | default: 'POST'
   assign redirect_to = redirect_to | default: params.redirect_to | default: '/'
-  assign register_page_url = register_page_url | default: params.register_page_url | default: '/sign-up'
-  assign password_reset_page_url = password_reset_page_url | default: params.password_reset_page_url | default: '/passwords/reset'
+  assign footer = footer | default: params.footer
 %}
 
 <form action="{{action}}" method="{{method}}" {% if params.classes %}class="{{params.classes}}"{% endif %} data-tc="login-form">
@@ -61,10 +58,8 @@ metadata:
   %}
 
   {% liquid
-    assign button_params = '{}' | parse_json | hash_merge: weight: 'primary', content: 'Login', type: 'submit'
-    theme_render_rc 'components/atoms/button', params: button_params
-  %}
 
-  {% if register_page_url %}<div class="pt-6">Dont't have an account? <a href="{{register_page_url}}">Register</a></p>{% endif %}
-  {% if password_reset_page_url %}<div>Password lost? <a href="{{password_reset_page_url}}">Reset password</a></div>{% endif %}
+    assign login = 'modules/user-forms/login' | t
+    theme_render_rc 'components/atoms/button', content: login, type: 'submit'
+  %}
 </form>
