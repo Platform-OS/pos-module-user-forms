@@ -12,6 +12,8 @@ metadata:
     values:
       - field_name: "email"
       - value: "random@example.com"
+    submit: 'Submit'
+    classes: ''
 ---
 {% liquid
   assign action = action | default: params.action
@@ -19,9 +21,13 @@ metadata:
   assign errors = errors | default: params.errors
   assign redirect_to = redirect_to | default: params.redirect_to | default: '/'
   assign registration_fields = registration_fields | default: params.registration_fields
+  assign classes = classes | default: params.classes
+  assign submit = submit | default: params.submit
+  assign default_submit = 'modules/user-forms/register' | t
+  assign submit = submit | default: default_submit
 %}
 
-<form action="{{action}}" method="{{method}}" data-tc="register-user">
+<form action="{{action}}" method="{{method}}" class="{{classes}}" data-tc="register-user">
   {% render 'authenticity_token' %}
 
   {% for field in registration_fields %}
@@ -45,10 +51,7 @@ metadata:
   {% render 'hcaptcha', object: object %}
 
   <fieldset class="mt-5">
-    {% liquid
-      assign label = 'modules/user-forms/register' | t
-      theme_render_rc 'components/atoms/button', content: label, type: 'submit'
-    %}
+    {% theme_render_rc 'components/atoms/button', content: submit, type: 'submit' %}
   </fieldset>
 
 </form>
