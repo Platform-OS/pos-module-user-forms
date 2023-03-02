@@ -12,6 +12,7 @@ metadata:
     values:
       - field_name: "email"
       - value: "random@example.com"
+    email_placeholder: ''
     submit: 'Submit'
 ---
 {% liquid
@@ -20,6 +21,7 @@ metadata:
   assign redirect_to = redirect_to | default: params.redirect_to | default: '/'
   assign footer = footer | default: params.footer
   assign classes = classes | default: params.classes
+  assign email_placeholder = email_placeholder | default: params.email_placeholder
   assign submit = submit | default: params.submit
   assign default_submit = 'modules/user-forms/login' | t
   assign submit = submit | default: default_submit
@@ -27,7 +29,7 @@ metadata:
 
 <form action="{{action}}" method="{{method}}" {% if classes %}class="{{classes}}"{% endif %} data-tc="login-form">
   {% liquid
-    assign input_params = '{}' | parse_json | hash_merge: name: 'email', required: true, type: 'email', value: params.values.email, classes: "w-full"
+    assign input_params = '{}' | parse_json | hash_merge: name: 'email', required: true, type: 'email', value: params.values.email, classes: "w-full", placeholder: email_placeholder
     assign label_params = '{}' | parse_json | hash_merge: content: 'Email'
     assign validation = '{}' | parse_json
     if params.errors['email']
