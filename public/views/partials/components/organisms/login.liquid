@@ -7,17 +7,17 @@ metadata:
     redirect_to: '/'
     classes: ''
     errors:
-      - field_name: "email"
-      - error: "Error message"
+      email:
+        - Error message
     values:
-      - field_name: "email"
-      - value: "random@example.com"
+      email: "random@example.com"
     email_placeholder: ''
     submit: 'Submit'
 ---
 {% liquid
   assign action = action | default: params.action
   assign method = method | default: params.method | default: 'POST'
+  assign errors = errors | default: errors
   assign redirect_to = redirect_to | default: params.redirect_to | default: '/'
   assign footer = footer | default: params.footer
   assign classes = classes | default: params.classes
@@ -32,9 +32,9 @@ metadata:
     assign input_params = '{}' | parse_json | hash_merge: name: 'email', required: true, type: 'email', value: params.values.email, classes: "w-full", placeholder: email_placeholder
     assign label_params = '{}' | parse_json | hash_merge: content: 'Email'
     assign validation = '{}' | parse_json
-    if params.errors['email']
+    if errors['email']
       hash_assign validation['passed'] = false
-      hash_assign validation['messages'] = params.errors['email']
+      hash_assign validation['messages'] = errors['email']
     endif
     assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, validation: validation, classes: "mb-6"
     theme_render_rc 'components/molecules/formfield', params: fieldset_params
@@ -44,9 +44,9 @@ metadata:
     assign input_params = '{}' | parse_json | hash_merge: name: 'password', type: 'password', required: true, classes: "w-full"
     assign label_params = '{}' | parse_json | hash_merge: content: 'Password'
     assign validation = '{}' | parse_json
-    if params.errors['password']
+    if errors['password']
       hash_assign validation['passed'] = false
-      hash_assign validation['messages'] = params.errors['password']
+      hash_assign validation['messages'] = errors['password']
     endif
     assign fieldset_params = '{}' | parse_json | hash_merge: label_params: label_params, input_params: input_params, validation: validation, classes: "mb-6"
     theme_render_rc 'components/molecules/formfield', params: fieldset_params
