@@ -7,11 +7,12 @@ metadata:
     redirect_to: '/'
     registration_fields: []
     errors:
-      - field_name: "email"
-      - error: "Error message"
+      email:
+        - Error message
+      password:
+        - Error message
     values:
-      - field_name: "email"
-      - value: "random@example.com"
+      email: random@example.com
     submit: 'Submit'
     classes: ''
 ---
@@ -38,7 +39,7 @@ metadata:
       assign validation = null | hash_merge: messages: error_messages
       if has_error
         hash_assign validation['passed'] = false
-        hash_assign validation['messages'] = error_messages
+        hash_assign validation['messages'] = errors[field.name]
       endif
       assign input_params = field | hash_merge: value: default_value, classes: 'w-full'
       assign label_params = null | hash_merge: content: field.label
