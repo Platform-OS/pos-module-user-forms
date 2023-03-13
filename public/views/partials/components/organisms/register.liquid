@@ -34,7 +34,7 @@ metadata:
   {% for field in registration_fields %}
     {% liquid
       assign default_value = values[field.name] | raw_escape_string
-      assign error_messages = '[]' | json_parse
+      assign error_messages = '[]' | parse_json
       assign has_error = errors[field.name]
       assign validation = null | hash_merge: messages: error_messages
       if has_error
