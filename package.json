@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Module description",
   "scripts": {
-    "version": "(cd ../../ && pos-cli modules version user-forms -p) && git add template-values.json && auto-changelog -p && git add CHANGELOG.md"
+    "version": "(pos-cli modules version user-forms -p) && git add template-values.json && auto-changelog -p && git add CHANGELOG.md"
   },
   "repository": {
     "type": "git",

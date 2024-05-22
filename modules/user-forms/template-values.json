@@ -1,6 +1,6 @@
 {
   "name": "User forms",
-  "machine_name": "user-form",
+  "machine_name": "user-forms",
   "type": "module",
   "version": "1.0.0",
   "dependencies": {
